@@ -1,6 +1,7 @@
 <!-- eslint-disable -->
 
 <template>
+    <div>
     <section>
         <base-card>
             <h2>{{ fullName }}</h2>
@@ -13,7 +14,7 @@
             <h2>Interested ? Reach out now!</h2>
             <base-button link :to="contactLink">Contact</base-button>
         </header>
-        <router-link></router-link>
+        <router-view></router-view>
         </base-card>
     </section>
     <section>
@@ -22,6 +23,7 @@
             <p>{{ description }}</p>
         </base-card>
     </section>
+    </div>
 </template>
 <!-- eslint-disable -->
 <script>
@@ -33,27 +35,27 @@
         },
         created() {
             // alert('asdf');
-            console.log(this.$state);
-            this.selectedCoach = this.$state.getters['coaches/coaches'].find((coach)=> coach.id === this.id)
+            this.selectedCoach = this.$store.getters['coaches/coaches'].find((coach)=> coach.id === this.id)
+        },
+        props: ['id'],
+        computed:{
+            fullName() {
+                return this.selectedCoach.firstName +' '+ this.selectedCoach.lastName;
+            },
+            contactLink() {
+                console.log(this.$route);
+                return this.$route.path+"/contact";
+            },
+            areas() {
+                return this.selectedCoach.areas;
+            },
+            rate() {
+                return this.selectedCoach.hourlyRate;
+            },
+            description() {
+                return this.selectedCoach.description;
+            }
         }
-        // props: ['id'],
-        // computed:{
-        //     fullName() {
-        //         return this.selectedCoach.firstName +' '+ this.selectedCoach.lastName;
-        //     },
-        //     contactLink() {
-        //         return this.$route.path+"/"+this.id+"/contact";
-        //     },
-        //     areas() {
-        //         return this.selectedCoach.areas;
-        //     },
-        //     rate() {
-        //         return this.selectedCoach.hourlyRate;
-        //     },
-        //     description() {
-        //         return this.selectedCoach.description;
-        //     }
-        // }
         
     }
 </script>
